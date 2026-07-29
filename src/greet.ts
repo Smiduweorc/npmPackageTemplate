@@ -7,11 +7,7 @@ export interface GreetOptions {
 }
 
 /**
- * Example function — replace with your library's real implementation.
- *
- * @param name - Who to greet.
- * @param options - Optional overrides, see {@link GreetOptions}.
- * @returns A greeting string.
+ * Example function; replace with your library's real implementation.
  */
 export function greet(name: string, options: GreetOptions = {}): string {
 	const greeting = options.greeting ?? "Hello";

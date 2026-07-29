@@ -1,6 +1,6 @@
-# Git hooks managed by lefthook (https://lefthook.dev).
-# Installed automatically by the "prepare" script when you run `npm install`
-# inside a git repository. YAML requires spaces for indentation (no tabs).
+# Installed by the "prepare" script on `npm install` inside a git repository.
+# YAML requires spaces for indentation, so this file does not use the tabs the
+# rest of the repo does.
 pre-commit:
     parallel: true
     commands:

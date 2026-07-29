@@ -16,7 +16,7 @@
 	],
 	"scripts": {
 		"build": "tsc",
-		"typecheck": "tsc --noEmit",
+		"typecheck": "tsc --noEmit && tsc --noEmit -p tests/tsconfig.json",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"test": "node --import tsx --test \"tests/**/*.test.ts\"",

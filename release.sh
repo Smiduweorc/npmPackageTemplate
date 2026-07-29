@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
-# Cuts a release: bumps the version in package.json, regenerates CHANGELOG.md
-# from the commit history (git-cliff), commits, and creates an annotated tag
-# whose message is the changelog for the new version.
+# Bumps the version in package.json, regenerates CHANGELOG.md from the commit
+# history, commits, and creates an annotated tag whose message is the changelog
+# for the new version.
 #
 # Usage: ./release.sh v[X.Y.Z]
 #   e.g. ./release.sh v1.2.0
@@ -20,7 +20,6 @@ fi
 tag="$1"
 version="${tag#v}"
 
-# Tag must look like vMAJOR.MINOR.PATCH (optionally with a -prerelease suffix).
 if ! [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
 	echo "Error: tag must be of the form v[X.Y.Z] (got '$tag')."
 	exit 1
@@ -37,18 +36,13 @@ if git rev-parse "$tag" >/dev/null 2>&1; then
 	exit 1
 fi
 
-echo "Preparing $tag..."
-
-# Update the version in package.json without creating a git tag/commit
-# (--no-git-tag-version); this release script owns the commit and tag.
+# This script owns the commit and tag, so npm must not create its own.
 npm version "$version" --no-git-tag-version --allow-same-version >/dev/null
 
-# Regenerate the changelog including the new tag.
 npx git-cliff --config cliff.toml --tag "$tag" --output CHANGELOG.md
 
 git add -A
 git commit -m "chore(release): prepare for $tag"
-git show --stat
 
 # Build the tag message from the unreleased section of the changelog.
 export GIT_CLIFF_TEMPLATE="\
@@ -61,5 +55,4 @@ export GIT_CLIFF_TEMPLATE="\
 changelog="$(npx git-cliff --config cliff.toml --unreleased --strip all)"
 git tag -a "$tag" -m "Release $tag" -m "$changelog"
 
-echo "Done!"
-echo "Now push the commit and tag: git push && git push --tags"
+echo "Tagged $tag. Push with: git push && git push --tags"

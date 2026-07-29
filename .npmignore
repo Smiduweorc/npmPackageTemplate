@@ -1,6 +1,5 @@
-# Publishing is driven by the "files" allowlist in package.json (only "dist"
-# is shipped), so this file is a backstop. Anything not under dist/ stays out
-# of the published tarball.
+# Backstop for the "files" allowlist in package.json, which already limits the
+# published tarball to dist/.
 /src
 /tests
 /index.ts

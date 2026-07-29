@@ -5,7 +5,6 @@ export default tseslint.config(
 	{
 		ignores: ["dist/**", "docs/**", "node_modules/**"],
 	},
-	// Sensible baselines layered in beneath the project's own rules.
 	js.configs.recommended,
 	...tseslint.configs.recommended,
 	{
@@ -14,11 +13,9 @@ export default tseslint.config(
 			parser: tseslint.parser,
 		},
 		rules: {
-			// --- existing project formatting rules (kept) ---
 			quotes: ["error", "double"],
 			indent: ["error", "tab"],
 			"no-tabs": "off",
-			// --- added for a stricter, friendlier DX ---
 			"no-console": "error",
 			"@typescript-eslint/no-unused-vars": [
 				"error",
