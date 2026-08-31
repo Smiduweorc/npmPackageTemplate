@@ -36,15 +36,21 @@ if git rev-parse "$tag" >/dev/null 2>&1; then
 	exit 1
 fi
 
+echo "Preparing $tag..."
+
 # This script owns the commit and tag, so npm must not create its own.
 npm version "$version" --no-git-tag-version --allow-same-version >/dev/null
 
 npx git-cliff --config cliff.toml --tag "$tag" --output CHANGELOG.md
 
-git add -A
+git add package.json CHANGELOG.md
+if [ -f package-lock.json ]; then
+	git add package-lock.json
+fi
 git commit -m "chore(release): prepare for $tag"
 
-# Build the tag message from the unreleased section of the changelog.
+# The release commit itself is skipped by the cliff.toml commit parsers, so
+# --unreleased yields exactly the commits going into this tag.
 export GIT_CLIFF_TEMPLATE="\
 	{% for group, commits in commits | group_by(attribute=\"group\") %}
 	{{ group | upper_first }}\
