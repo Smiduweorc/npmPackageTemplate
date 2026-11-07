@@ -34,7 +34,7 @@
 	"license": "ISC",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/grMLEqomlkkU5Eeinz4brIrOVCUCkJuN/lib-template.git"
+		"url": "git+https://github.com/Smiduweorc/npmPackageTemplate.git"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^21.2.4",
