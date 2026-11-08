@@ -1,26 +1,19 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Part of the TypeScript library template does not work
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Which part**
 
-**To Reproduce**
-Steps to reproduce the behavior:
+[e.g. build, tests, ESLint, TypeDoc, git hooks, CI, release.sh]
 
-1. Go to '...'
-2. Run '....'
-3. See error
+**What you ran, and the full output**
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**What you expected**
 
-**Environment (please complete the following information):**
+**Environment**
 
-- OS: [e.g. Ubuntu 24.04, Windows 11, macOS 15]
 - Node.js version: [e.g. 22.11.0]
-- Package version: [e.g. 1.0.0]
-
-**Additional context**
-Add any other context about the problem here.
+- npm version: [e.g. 11.0.0]
+- OS: [e.g. Ubuntu 24.04, Windows 11, macOS 15]
+- Template commit: [`git rev-parse --short HEAD`]
