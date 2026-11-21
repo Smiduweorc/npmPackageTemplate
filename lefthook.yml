@@ -1,4 +1,4 @@
-# Installed by the "prepare" script on `npm install` inside a git repository.
+# Installed by the "prepare" script on `bun install` inside a git repository.
 # YAML requires spaces for indentation, so this file does not use the tabs the
 # rest of the repo does.
 pre-commit:
@@ -6,9 +6,9 @@ pre-commit:
     commands:
         lint:
             glob: "*.{js,mjs,cjs,ts,tsx}"
-            run: npx eslint {staged_files}
+            run: bunx eslint {staged_files}
 
 commit-msg:
     commands:
         commitlint:
-            run: npx commitlint --edit {1}
+            run: bunx commitlint --edit {1}

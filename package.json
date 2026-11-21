@@ -14,12 +14,19 @@
 	"files": [
 		"dist"
 	],
+	"engines": {
+		"bun": ">=1.4.5",
+		"node": ">=22"
+	},
 	"scripts": {
 		"build": "tsc",
 		"typecheck": "tsc --noEmit && tsc --noEmit -p tests/tsconfig.json",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
-		"test": "node --import tsx --test \"tests/**/*.test.ts\"",
+		"test": "bun run test:bun && bun run test:node",
+		"test:bun": "bun test",
+		"test:node": "node --import tsx --test \"tests/**/*.test.ts\"",
+		"check:pack": "bun run build && scripts/pack-check.sh",
 		"docs": "typedoc",
 		"changelog": "git-cliff -o CHANGELOG.md",
 		"prepare": "lefthook install"
@@ -36,6 +43,7 @@
 		"type": "git",
 		"url": "git+https://github.com/Smiduweorc/npmPackageTemplate.git"
 	},
+	"packageManager": "bun@1.4.5",
 	"devDependencies": {
 		"@commitlint/cli": "^21.2.4",
 		"@commitlint/config-conventional": "^21.2.3",

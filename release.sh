@@ -38,14 +38,14 @@ fi
 
 echo "Preparing $tag..."
 
-# This script owns the commit and tag, so npm must not create its own.
-npm version "$version" --no-git-tag-version --allow-same-version >/dev/null
+# This script owns the commit and tag, so bun must not create its own.
+bun pm version "$version" --no-git-tag-version --allow-same-version >/dev/null
 
-npx git-cliff --config cliff.toml --tag "$tag" --output CHANGELOG.md
+bunx git-cliff --config cliff.toml --tag "$tag" --output CHANGELOG.md
 
 git add package.json CHANGELOG.md
-if [ -f package-lock.json ]; then
-	git add package-lock.json
+if [ -f bun.lock ]; then
+	git add bun.lock
 fi
 git commit -m "chore(release): prepare for $tag"
 
@@ -58,7 +58,7 @@ export GIT_CLIFF_TEMPLATE="\
 		- {% if commit.breaking %}(breaking) {% endif %}{{ commit.message | upper_first }} ({{ commit.id | truncate(length=7, end=\"\") }})\
 	{% endfor %}
 	{% endfor %}"
-changelog="$(npx git-cliff --config cliff.toml --unreleased --strip all)"
+changelog="$(bunx git-cliff --config cliff.toml --unreleased --strip all)"
 git tag -a "$tag" -m "Release $tag" -m "$changelog"
 
 echo "Tagged $tag. Push with: git push && git push --tags"

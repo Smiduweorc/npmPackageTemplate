@@ -27,20 +27,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
-          cache: npm
+          bun-version-file: package.json
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       # Fails on a broken link or an unresolved reference: typedoc.json sets
       # treatWarningsAsErrors. On a pull request this is the whole job, since
       # the test matrix skips markdown-only changes.
       - name: Build the site
-        run: npm run docs
+        run: bun run docs
 
       # enablement turns Pages on via the API if the repository has not had it
       # switched on yet, so a fresh clone of this repo deploys without a manual

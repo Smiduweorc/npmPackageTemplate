@@ -3,6 +3,7 @@
 /src
 /tests
 /index.ts
+/scripts
 /docs
 node_modules
 eslint*
@@ -12,6 +13,7 @@ cliff.toml
 lefthook.yml
 commitlint.config.js
 release.sh
+bun.lock
 .nvmrc
 .vscode
 .github
