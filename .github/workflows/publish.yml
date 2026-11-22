@@ -1,0 +1,100 @@
+# Disabled in the template: uncomment everything below once the package
+# has a real name and a trusted publisher set up on npm.
+#
+# name: Publish
+#
+# # Publishes a tag cut by release.sh to npm. Manual only: run it from the
+# # Actions tab (or `gh workflow run publish.yml -f tag=vX.Y.Z`) after
+# # `git push && git push --tags`.
+# #
+# # Auth is npm trusted publishing (OIDC), so there is no NPM_TOKEN secret.
+# # Provenance is attached automatically.
+#
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       tag:
+#         description: "Tag to publish, e.g. v1.2.0"
+#         required: true
+#         type: string
+#
+# permissions:
+#   contents: read
+#   id-token: write # npm trusted publishing
+#
+# # Never publish the same package twice at once.
+# concurrency:
+#   group: publish
+#   cancel-in-progress: false
+#
+# jobs:
+#   publish:
+#     name: Publish ${{ inputs.tag }}
+#     runs-on: ubuntu-latest
+#     # Gate with required reviewers under Settings > Environments > npm.
+#     environment: npm
+#
+#     steps:
+#       - name: Checkout tag
+#         uses: actions/checkout@v7
+#         with:
+#           ref: refs/tags/${{ inputs.tag }}
+#           fetch-depth: 0
+#
+#       - name: Verify tag
+#         env:
+#           TAG: ${{ inputs.tag }}
+#         run: |
+#           [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] \
+#             || { echo "::error::'$TAG' is not vX.Y.Z"; exit 1; }
+#           version="$(node -p "require('./package.json').version")"
+#           [ "v$version" = "$TAG" ] \
+#             || { echo "::error::package.json is $version, tag is $TAG"; exit 1; }
+#           # Only publish what has landed on the default branch.
+#           git merge-base --is-ancestor HEAD "origin/${{ github.event.repository.default_branch }}" \
+#             || { echo "::error::$TAG is not on ${{ github.event.repository.default_branch }}"; exit 1; }
+#
+#       # Reads "packageManager" from package.json, so the pin lives in one place.
+#       - name: Setup Bun
+#         uses: oven-sh/setup-bun@v2
+#         with:
+#           bun-version-file: package.json
+#
+#       # npm does the publish itself: trusted publishing needs npm >= 11.5.1.
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v7
+#         with:
+#           node-version: 24.x
+#           registry-url: https://registry.npmjs.org
+#
+#       - name: Update npm
+#         run: npm install -g npm@latest
+#
+#       - name: Install dependencies
+#         run: bun install --frozen-lockfile
+#
+#       - name: Lint
+#         run: bun run lint
+#
+#       - name: Typecheck
+#         run: bun run typecheck
+#
+#       - name: Run tests
+#         run: bun run test
+#
+#       - name: Build
+#         run: bun run build
+#
+#       - name: Check the packed package
+#         run: scripts/pack-check.sh
+#
+#       # Prereleases (v1.2.0-rc.1) go to "next" so `npm i <pkg>` never picks them.
+#       - name: Publish
+#         env:
+#           TAG: ${{ inputs.tag }}
+#         run: |
+#           if [[ "$TAG" == *-* ]]; then
+#             npm publish --tag next
+#           else
+#             npm publish
+#           fi
