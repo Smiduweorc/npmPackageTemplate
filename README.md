@@ -45,9 +45,9 @@ tests cannot see. It skips Node when Node is not installed, except in CI.
 3. Replace `src/greet.ts`, its re-export in `index.ts`, and
    `tests/greet.test.ts`. Tests go under `tests/` as `*.test.ts`.
 
-The tasks are the scripts in `package.json`. Only `dist/` is published, and
-there is no publish workflow: build and `bun publish` with your own registry
-settings.
+The tasks are the scripts in `package.json`. Only `dist/` is published. The
+publish workflow ships commented out; [guides/publishing.md](guides/publishing.md)
+covers turning it on and the npm trust setup.
 
 Commits follow Conventional Commits and `./release.sh v1.2.0` cuts a release;
 [black-garden-ants](https://github.com/Smiduweorc/black-garden-ants) explains
